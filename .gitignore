@@ -1,2 +1,5 @@
 worker-configuration.d.ts
+.wrangler
+.git
+public/fonts/
 node_modules

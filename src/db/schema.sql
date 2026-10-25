@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS Pages;
 
 CREATE TABLE IF NOT EXISTS Pages (
     url TEXT PRIMARY KEY,
+    title TEXT NOT NULL DEFAULT "Untitled",
+    description TEXT,
     html TEXT NOT NULL,
     read_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
