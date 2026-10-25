@@ -1,5 +1,7 @@
 import { env } from "cloudflare:workers";
+import { ProcessedPage } from "..";
 
+type PageListRow = Omit<PageRow, "html">;
 type PageRow = {
     url: string;
     html: string;
@@ -7,7 +9,7 @@ type PageRow = {
     description: string | null;
     read_at: string;
 };
-type PageListRow = Omit<PageRow, "html">;
+
 export async function listPages(): Promise<PageListRow[]> {
     const { results } = await env.DB.prepare(
         "SELECT url, title, description, read_at FROM Pages",
@@ -16,6 +18,7 @@ export async function listPages(): Promise<PageListRow[]> {
 }
 
 export async function getPage(url: string): Promise<PageRow | null> {
+    console.log("finding: " + url);
     return env.DB.prepare(
         `UPDATE Pages
        SET read_at = CURRENT_TIMESTAMP
@@ -26,18 +29,13 @@ export async function getPage(url: string): Promise<PageRow | null> {
         .first<PageRow>();
 }
 
-export async function createPage(
-    url: string,
-    title: string,
-    html: string,
-    description: string | null,
-): Promise<PageRow | null> {
+export async function createPage(page: ProcessedPage): Promise<PageRow | null> {
     return env.DB.prepare(
         `INSERT INTO Pages (url, title, html, description) 
         VALUES (?, ?, ?, ?) 
         ON CONFLICT DO NOTHING 
         RETURNING *`,
     )
-        .bind(url, title, html, description)
+        .bind(page.url, page.title, page.html, page.description)
         .first<PageRow>();
 }
