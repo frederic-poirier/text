@@ -1,0 +1,19 @@
+{
+	"name": "text",
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy --minify",
+		"cf-typegen": "wrangler types --env-interface CloudflareBindings"
+	},
+	"dependencies": {
+		"defuddle": "^0.19.5",
+		"highlight.js": "^11.12.0",
+		"hono": "^4.13.13",
+		"linkedom": "^0.18.14"
+	},
+	"devDependencies": {
+		"@types/node": "^26.6.5",
+		"wrangler": "^4.152.0"
+	}
+}
